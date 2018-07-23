@@ -4,10 +4,22 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
 var app = express();
+
+const mongoose = require('mongoose');
+mongoose.connect("mongodb://127.0.0.1/routerBar");
+
+global.utils = require('./helpers/utils');
+
+// Routes
+var catalogsRouter = require('./routes/catalogs');
+var categoriesRouter = require('./routes/categories');
+var customersRouter = require('./routes/customers');
+var ordersRouter = require('./routes/orders');
+var productPresentationsRouter = require('./routes/productPresentations');
+var pubsRouter = require('./routes/pubs');
+var reputationsRouter = require('./routes/reputations');
+var indexRouter = require('./routes/index');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -19,8 +31,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Middlewares para rutas
+app.use('/catalogs', catalogsRouter);
+app.use('/categories', categoriesRouter);
+app.use('/customers', customersRouter);
+app.use('/orders', ordersRouter);
+app.use('/productPresentations', productPresentationsRouter);
+app.use('/pubs', pubsRouter);
+app.use('/reputations', reputationsRouter);
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
