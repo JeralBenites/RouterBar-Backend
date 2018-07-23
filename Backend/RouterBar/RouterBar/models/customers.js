@@ -4,7 +4,6 @@ const schema = mongoose.Schema;
 const customerSchema = new schema({
     userName:{ type:String,required:true },
     email:{type:String,required:true,unique:true,index:true},
-    password:{type:String,required:true,index:true},
     birth:{type:Date,required:true},
     social: {
         facebook: { type:String,required:false }, 

@@ -7,7 +7,8 @@ var logger = require('morgan');
 var app = express();
 
 const mongoose = require('mongoose');
-mongoose.connect("mongodb://127.0.0.1/routerBar");
+//mongoose.connect("mongodb://Jeral:Matsoft2018@ds243491.mlab.com:43491/heroku_89k1zw5x")
+mongoose.connect("mongodb://127.0.0.1/restaurant");
 
 global.utils = require('./helpers/utils');
 

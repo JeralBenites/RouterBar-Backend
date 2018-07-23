@@ -2,17 +2,21 @@ const customersModels = require('../models/customers');
 const customer = {
     store(body){
         return new Promise((resolve,reject)=>{
-            customersModels.create({
-                userName:body.userName,
-                email:body.email,
-                password:utils.encrypt(body.password),
-                birth:body.birth,
-                social:body.social,
-                userRegister:body.userRegister
-            },(error,newCustomer) => {
-                if(error)return reject({message:error , data:[]});
-                return resolve({message:"The customer was inserted", data:newCustomer});
-            })   
+            if(utils.validarEmail(body.email) ){
+                customersModels.create({
+                    userName:body.userName,
+                    email:body.email,
+                    password:utils.encrypt(body.password),
+                    birth:body.birth,
+                    social:body.social,
+                    userRegister:body.userRegister
+                }, (error,newCustomer) => {
+                    if(error)return reject({message:error , data:[]});
+                    return resolve({message:"The customer was inserted", data:newCustomer});
+                }) 
+              }else{
+                return reject({message:"Wrong E-mail", data:newCustomer});
+              } 
         });
     },
     list(){
