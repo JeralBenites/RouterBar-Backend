@@ -12,8 +12,8 @@ const pubSchema = new schema({
     },
     image: { type:String,required:true },    
     hour : { 
-        hourOpen: { type:Date,required:false },
-        hourClose: { type:Date,required:false }
+        hourOpen: { type:String,required:false },
+        hourClose: { type:String,required:false }
     },
     hora24:{ type:Boolean,required:true },
     delivery:{ type:Boolean,required:true },

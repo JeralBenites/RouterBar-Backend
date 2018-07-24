@@ -15,7 +15,14 @@ const utils = {
   validarEmail(email){
     const re = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/;
     return re.test(email);
+  },
+  escapeURIparam (url) {
+    if (encodeURIComponent) url = encodeURIComponent(url);
+    else if (encodeURI) url = encodeURI(url);
+    else url = escape(url);
+    url = url.replace(/\+/g, '%2B'); // Force the replacement of "+"
+    return url;
   }
-  
 }
+  
 module.exports = utils;

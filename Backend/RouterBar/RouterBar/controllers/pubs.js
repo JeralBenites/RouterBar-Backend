@@ -1,18 +1,18 @@
 const pubsModels = require('../models/pubs');
 const pub = {
-    store(body){
+    store(body,space){
         return new Promise((resolve,reject)=>{
             pubsModels.create({
                 name:body.name,
                 address:body.address,
-                image:body.image,
+                image:space,
                 hour:body.hour,
                 hora24:body.hora24,
                 delivery:body.delivery,
                 social:body.social,
                 userRegister:body.userRegister
             },(error,newPub) => {
-                if(error)return reject({message:error , data:[]});
+                if(error)return reject({message:error , data:{}});
                 return resolve({message:"The pub was inserted", data:newPub});
             })   
         });
@@ -79,6 +79,20 @@ const pub = {
                     return resolve({message:"The pub was updated", data:[]});
                 })
             })
-        } 
+        } ,
+        updateUrlImage(id,imagedata){
+            return new Promise((resolve,reject)=>{
+                pubsModels.update(
+                    { _id : id },
+                    {
+                        $set:{
+                            image:imagedata
+                        }
+                    },(error)=>{
+                        if(error)return reject({message:error , data:[]});
+                        return resolve({message:"The pub was updated", data:[{storage:imagedata}]});
+                    })
+                })
+            } 
 }
 module.exports = pub;

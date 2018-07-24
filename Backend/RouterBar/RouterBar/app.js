@@ -3,12 +3,11 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
 var app = express();
-
 const mongoose = require('mongoose');
+var multipart = require('connect-multiparty');
 mongoose.connect("mongodb://Jeral:Matsoft2018@ds243491.mlab.com:43491/heroku_89k1zw5x")
-//mongoose.connect("mongodb://127.0.0.1/restaurant");
+//mongoose.connect("mongodb://127.0.0.1/routerBar");
 
 global.utils = require('./helpers/utils');
 
@@ -22,6 +21,12 @@ var pubsRouter = require('./routes/pubs');
 var reputationsRouter = require('./routes/reputations');
 var indexRouter = require('./routes/index');
 
+//Core
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -30,6 +35,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(multipart());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Middlewares para rutas
