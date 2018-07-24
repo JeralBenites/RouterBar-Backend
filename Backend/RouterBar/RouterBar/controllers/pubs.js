@@ -4,7 +4,7 @@ const pub = {
         return new Promise((resolve,reject)=>{
             pubsModels.create({
                 name:body.name,
-                addres:body.addres,
+                address:body.address,
                 image:body.image,
                 hour:body.hour,
                 hora24:body.hora24,

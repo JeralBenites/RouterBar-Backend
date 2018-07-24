@@ -3,8 +3,11 @@ const schema = mongoose.Schema;
 
 const pubSchema = new schema({
     name:{ type:String,required:true },
-    addres : { 
-        coord: { Number, Number },
+    address : { 
+        coord: { 
+            latitude:{ type:Number,required:true }, 
+            longitud:{ type:Number,required:true } 
+        },
         street: { type:String,required:true }
     },
     image: { type:String,required:true },    
