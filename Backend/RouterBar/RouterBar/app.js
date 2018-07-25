@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var app = express();
+var bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 var multipart = require('connect-multiparty');
 mongoose.connect("mongodb://Jeral:Matsoft2018@ds243491.mlab.com:43491/heroku_89k1zw5x")
@@ -20,6 +21,9 @@ var productPresentationsRouter = require('./routes/productPresentations');
 var pubsRouter = require('./routes/pubs');
 var reputationsRouter = require('./routes/reputations');
 var indexRouter = require('./routes/index');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 //Core
 app.use(function(req, res, next) {
@@ -27,6 +31,7 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

@@ -1,7 +1,8 @@
 const pubsModels = require('../models/pubs');
+const fs = require('fs-extra');
 const pub = {
     store(body,space){
-        return new Promise((resolve,reject)=>{
+         return new Promise((resolve,reject)=>{
             pubsModels.create({
                 name:body.name,
                 address:body.address,

@@ -1,28 +1,52 @@
 const express = require('express');
 const fs = require('fs-extra');
 const router = express.Router();
-var path = require("path");
 const pubController = require('../controllers/pubs');
+const pubsModels = require('../models/pubs');
 
 
 router.post('/',(req,res,next)=>{ 
-  var rand = Math.random().toString();
-  fs.rename(req.files.file.path, './public/images/'+rand+req.files.file.name, function (err) {
-    if (err) throw err; 
-   /* pubController.updateUrlImage(success.data._id,path.resolve('./public/images/'+success.data._id+req.files.file.name)).then(
-      (ok)=>{ res.send(ok);},
-      (no)=>{ res.send(no);}
-    )*/
-  });
-  pubController.store(JSON.parse(req.body.result),path.resolve('./public/images/'+rand+req.files.file.name)).then(
+  var file = req.files.file;
+  console.log(file.name);
+  console.log(file.type);
+  fs.readFile(file.path, 'base64', function(err,data){
+    if(err){
+        log.error("File read error: "+err)
+        res.status(500).send("Internal server error!")
+    } else {
+        file.data=Buffer(data).toString('base64');
+        console.log("This is what comes out" + data);
+    }
+    pubController.store(JSON.parse(req.body.result),data).then(
+      (success)=>{
+        res.json(success);
+      },
+      (error)=>{
+        res.status(400).json(error);
+      }
+    );
+})
+  /**/
+});
+
+/*router.post('/',(req,res,next)=>{ 
+ var path = req.files.file.path;
+ var category = new pubsModels();
+        category.image.data = fs.readFileSync(path);
+        category.image.contentType = 'image/png';
+        category.save(function (err) {
+            if (err) throw new Error(err);
+            res.sendStatus(200)
+        });*/
+  /*pubController.store(JSON.parse(req.body.result),path).then(
     (success)=>{
       res.json(success);
     },
     (error)=>{
       res.status(400).json(error);
     }
-  );
-});
+  );*/
+//});
 
   router.get('/', (req, res, next)=> {
     pubController.list().then(
@@ -70,4 +94,15 @@ router.post('/',(req,res,next)=>{
 
   module.exports = router;
 
+//Image Store Folder
+  /* var rand = Math.random().toString();  
+  fs.rename(req.files.file.path, path.resolve('./public/images/'+rand+req.files.file.name), function (err) {
+    if (err) throw err; 
+    pubController.updateUrlImage(success.data._id,path.resolve('./public/images/'+success.data._id+req.files.file.name)).then(
+      (ok)=>{ res.send(ok);},
+      (no)=>{ res.send(no);}
+    )
+  });
+  
+  //res.sendFile('https://routerbar.herokuapp.com/images/'+rand+req.files.file.name);*/
   

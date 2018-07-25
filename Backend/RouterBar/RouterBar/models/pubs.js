@@ -10,7 +10,7 @@ const pubSchema = new schema({
         },
         street: { type:String,required:true }
     },
-    image: { type:String,required:true },    
+    image: { type:String,required:true },
     hour : { 
         hourOpen: { type:String,required:false },
         hourClose: { type:String,required:false }
