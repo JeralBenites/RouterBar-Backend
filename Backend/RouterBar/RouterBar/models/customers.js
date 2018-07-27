@@ -2,8 +2,7 @@ const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 
 const customerSchema = new schema({
-    userName:{ type:String,required:true },
-    email:{type:String,required:true,unique:true,index:true},
+    user_id:{ type:String,required:false },
     birth:{type:Date,required:true},
     social: {
         facebook: { type:String,required:false }, 
@@ -14,7 +13,6 @@ const customerSchema = new schema({
         phone: { type:String,required:false }
     },
     state: { type:String,required:false,default:'1' },  
-    userRegister: { type:String,required:true }, 
     dateRegister:{ type:Date,default:new Date() },
     active:{ type:Boolean,default:true }
 });

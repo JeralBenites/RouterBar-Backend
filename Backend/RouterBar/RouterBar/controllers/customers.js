@@ -1,22 +1,30 @@
 const customersModels = require('../models/customers');
+const usersModels = require('../models/users');
 const customer = {
     store(body){
         return new Promise((resolve,reject)=>{
-            if(utils.validarEmail(body.email) ){
-                customersModels.create({
-                    userName:body.userName,
-                    email:body.email,
-                    password:utils.encrypt(body.password),
-                    birth:body.birth,
-                    social:body.social,
-                    userRegister:body.userRegister
-                }, (error,newCustomer) => {
-                    if(error)return reject({message:error , data:[]});
-                    return resolve({message:"The customer was inserted", data:newCustomer});
-                }) 
-              }else{
+            //if(utils.validarEmail(body.email) ){
+                usersModels.create(
+                    { 
+                        usuario: body.userEntity.userName,
+                        email: body.userEntity.email,
+                        password: utils.encrypt(body.userEntity.password),
+                        state : body.userEntity.state
+                    },(error, newUser)=>{
+                        if(error)return reject({message:error , data:[]});
+                        customersModels.create({
+                            user_id: newUser._id,
+                            birth:body.birth,
+                            state : body.state
+                        }, (error,newCustomer) => {
+                            if(error)return reject({message:error , data:[]});
+                            return resolve({message:"The User was inserted", data:newCustomer});
+                        }) 
+                    return resolve({message:"The User was inserted", data:newUser});
+                  })
+            /*  }else{
                 return reject({message:"Wrong E-mail", data:newCustomer});
-              } 
+              } */
         });
     },
     list(){

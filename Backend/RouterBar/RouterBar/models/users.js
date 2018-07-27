@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 
 const userSchema = new schema({
+    usuario:{type:String,required:true,unique:true,index:true},
     email:{type:String,required:true,unique:true,index:true},
     password:{type:String,required:true,index:true},
     state: { type:String,default:'1' },  

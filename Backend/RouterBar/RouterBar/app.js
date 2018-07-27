@@ -21,8 +21,6 @@ var productPresentationsRouter = require('./routes/productPresentations');
 var pubsRouter = require('./routes/pubs');
 var reputationsRouter = require('./routes/reputations');
 var indexRouter = require('./routes/index');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 
 //Core

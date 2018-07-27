@@ -24,7 +24,7 @@ const pub = {
                 (error,listPubs)=>{
                     if(error)return reject({message:error , data:[]});
                     return resolve({message:"The list of pubs", data:listPubs});
-                })
+                }).sort({_id: 'desc'})
             })
         },  
     listById(id){
@@ -36,7 +36,7 @@ const pub = {
                 },
                 { 
                     name:true,
-                    addres:true,
+                    address:true,
                     image:true,
                     hour:true,
                     hora24:true,
@@ -49,6 +49,28 @@ const pub = {
                 })
             })
         },
+        listByName(body){
+            return new Promise((resolve,reject)=>{
+                pubsModels.find(
+                    { 
+                        name : { $regex: '.*' + body.name + '.*' },
+                        active : true 
+                    },
+                    { 
+                        name:true,
+                        address:true,
+                        image:true,
+                        hour:true,
+                        hora24:true,
+                        delivery:true,
+                        social:true
+                    },(error,listPubs)=>{
+                        if(error)return reject({message:error , data:[]});
+                        if(!listPubs) return reject({message:"The pub does not exist ", data:[]});
+                        return resolve({message:"The pub by name " + body.name, data:listPubs});
+                    })
+                })
+            },
     delete(id){
         return new Promise((resolve,reject)=>{
             pubsModels.update(
@@ -68,7 +90,7 @@ const pub = {
                 {
                     $set:{
                         name:body.name,
-                        addres:body.addres,
+                        address:body.address,
                         image:body.image,
                         hour:body.hour,
                         hora24:body.hora24,

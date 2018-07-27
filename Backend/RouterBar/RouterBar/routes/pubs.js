@@ -2,20 +2,15 @@ const express = require('express');
 const fs = require('fs-extra');
 const router = express.Router();
 const pubController = require('../controllers/pubs');
-const pubsModels = require('../models/pubs');
-
 
 router.post('/',(req,res,next)=>{ 
   var file = req.files.file;
-  console.log(file.name);
-  console.log(file.type);
   fs.readFile(file.path, 'base64', function(err,data){
     if(err){
-        log.error("File read error: "+err)
-        res.status(500).send("Internal server error!")
+      log.error("File read error: "+err)
+      res.status(500).send("Internal server error!")
     } else {
-        file.data=Buffer(data).toString('base64');
-        console.log("This is what comes out" + data);
+      file.data=Buffer(data).toString('base64');
     }
     pubController.store(JSON.parse(req.body.result),data).then(
       (success)=>{
@@ -25,9 +20,9 @@ router.post('/',(req,res,next)=>{
         res.status(400).json(error);
       }
     );
-})
-  /**/
+  });
 });
+
 
 /*router.post('/',(req,res,next)=>{ 
  var path = req.files.file.path;
@@ -50,6 +45,17 @@ router.post('/',(req,res,next)=>{
 
   router.get('/', (req, res, next)=> {
     pubController.list().then(
+      (success)=>{
+        res.json(success);
+      },
+      (error)=>{
+        res.status(400).json(error);
+      }
+    );
+  });
+
+  router.post('/listByName', (req, res, next)=> {
+    pubController.listByName(req.body).then(
       (success)=>{
         res.json(success);
       },

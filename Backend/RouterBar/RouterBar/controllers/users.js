@@ -20,6 +20,7 @@ const user = {
             if(utils.validarEmail(body.email) ){
                 usersModels.create(
                     { 
+                        usuario: body.usuario,
                         email: body.email,
                         password: utils.encrypt(body.password)
                     },(error, newUser)=>{
