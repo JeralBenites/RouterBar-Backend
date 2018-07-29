@@ -51,8 +51,8 @@ const productPresentation = {
                 {
                     $set:{ active : false }
                 },(error)=>{
-                    if(error)return reject({message:error , data:[]});
-                    return resolve({message:"The productPresentation was deleted", data:[]});
+                    if(error)return reject({message:error , data:{}});
+                    return resolve({message:"The productPresentation was deleted", data:{}});
                 })
             })
         },

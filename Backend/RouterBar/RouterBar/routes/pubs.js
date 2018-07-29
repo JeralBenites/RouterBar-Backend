@@ -13,7 +13,7 @@ router.post('/',(req,res,next)=>{
       file.data=Buffer(data).toString('base64');
     }
     pubController.store(JSON.parse(req.body.result),data).then(
-      (success)=>{
+      (success)=>{ 
         res.json(success);
       },
       (error)=>{
@@ -97,6 +97,17 @@ router.post('/',(req,res,next)=>{
       }
     )  
   })
+
+  router.post('/getByCoordenates', (req, res, next)=> {
+    pubController.listByCoordenates(req.body).then(
+      (success)=>{
+        res.json(success);
+      },
+      (error)=>{
+        res.status(400).json(error);
+      }
+    );
+  });
 
   module.exports = router;
 

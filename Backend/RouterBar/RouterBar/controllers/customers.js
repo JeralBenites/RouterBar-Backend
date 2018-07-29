@@ -62,8 +62,8 @@ const customer = {
                 {
                     $set:{ active : false }
                 },(error)=>{
-                    if(error)return reject({message:error , data:[]});
-                    return resolve({message:"The customer was deleted", data:[]});
+                    if(error)return reject({message:error , data:{}});
+                    return resolve({message:"The customer was deleted", data:{}});
                 })
             })
         },

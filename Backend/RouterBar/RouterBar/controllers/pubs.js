@@ -2,7 +2,9 @@ const pubsModels = require('../models/pubs');
 const fs = require('fs-extra');
 const pub = {
     store(body,space){
-         return new Promise((resolve,reject)=>{
+        return new Promise((resolve,reject)=>{
+            console.log(body);
+            //resolve(body);
             pubsModels.create({
                 name:body.name,
                 address:body.address,
@@ -20,7 +22,7 @@ const pub = {
     },
     list(){
         return new Promise((resolve,reject)=>{
-            pubsModels.find({active : true},
+            pubsModels.find({active : true},{image:false},
                 (error,listPubs)=>{
                     if(error)return reject({message:error , data:[]});
                     return resolve({message:"The list of pubs", data:listPubs});
@@ -56,15 +58,8 @@ const pub = {
                         name : { $regex: '.*' + body.name + '.*' },
                         active : true 
                     },
-                    { 
-                        name:true,
-                        address:true,
-                        image:true,
-                        hour:true,
-                        hora24:true,
-                        delivery:true,
-                        social:true
-                    },(error,listPubs)=>{
+                    {image:false},
+                    (error,listPubs)=>{
                         if(error)return reject({message:error , data:[]});
                         if(!listPubs) return reject({message:"The pub does not exist ", data:[]});
                         return resolve({message:"The pub by name " + body.name, data:listPubs});
@@ -78,8 +73,8 @@ const pub = {
                 {
                     $set:{ active : false }
                 },(error)=>{
-                    if(error)return reject({message:error , data:[]});
-                    return resolve({message:"The pub was deleted", data:[]});
+                    if(error)return reject({message:error , data:{}});
+                    return resolve({message:"The pub was deleted", data:{}});
                 })
             })
         },
@@ -116,6 +111,25 @@ const pub = {
                         return resolve({message:"The pub was updated", data:[{storage:imagedata}]});
                     })
                 })
-            } 
+            } ,
+            listByCoordenates(body){
+                return new Promise((resolve,reject)=>{
+                    pubsModels.find(
+                        {
+                            "address.loc":{
+                                "$geoWithin": {
+                                    "$center": [body.address.loc.coordinates, body.address.radius]
+                                }
+                            },
+                            active : true 
+                        },
+                        {image:false},
+                        (error,listPubs)=>{
+                            if(error)return reject({message:error , data:[]});
+                            if(!listPubs) return reject({message:"The pub does not exist ", data:[]});
+                            return resolve({message:"The pub List" , data:listPubs});
+                        })
+                    })
+                }
 }
 module.exports = pub;
