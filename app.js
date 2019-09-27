@@ -7,8 +7,7 @@ var app = express();
 var bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 var multipart = require('connect-multiparty');
-mongoose.connect("mongodb://Jeral:Matsoft2018@ds243491.mlab.com:43491/heroku_89k1zw5x")
-//mongoose.connect("mongodb://127.0.0.1/routerBar");
+mongoose.connect("mongodb://127.0.0.1/routerBar");
 
 global.utils = require('./helpers/utils');
 
